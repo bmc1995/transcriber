@@ -1,5 +1,5 @@
-import { ColorPaletteProp, VariantProp } from "@mui/joy";
-import { createSlice } from "@reduxjs/toolkit";
+import { ColorPaletteProp, VariantProp } from '@mui/joy';
+import { createSlice } from '@reduxjs/toolkit';
 
 export interface ToastAlert {
   id: string;
@@ -20,22 +20,25 @@ type ToastRemoveAction = {
 };
 
 export const toastSlice = createSlice({
-  name: "toast",
+  name: 'toast',
   initialState: {
     toastQueue: <ToastAlert[]>[],
   },
   reducers: {
-    addToast: (state, action: ToastAddAction) => {
+    addToast: (
+      state: {
+        toastQueue: { id: string; duration: number; msg: string; color: ColorPaletteProp; variant: VariantProp }[];
+      },
+      action: ToastAddAction,
+    ) => {
       state.toastQueue.push({
         ...action.payload,
       });
     },
-    removeToast: (state, action: ToastRemoveAction) => {
+    removeToast: (state: { toastQueue: ToastAlert[] }, action: ToastRemoveAction) => {
       return {
         ...state,
-        toastQueue: state.toastQueue.filter(
-          (toast) => toast.id != action.payload
-        ),
+        toastQueue: state.toastQueue.filter((toast: { id: string }) => toast.id != action.payload),
       };
     },
   },
